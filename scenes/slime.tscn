@@ -50,6 +50,9 @@ sprite_frames = SubResource("SpriteFrames_fd6lc")
 autoplay = "default"
 frame_progress = 0.33436757
 
+[node name="RayCastDown" type="RayCast2D" parent="AnimatedSlime" unique_id=1382678392]
+position = Vector2(12, 0)
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1583151862]
 position = Vector2(0, 4.5)
 shape = SubResource("RectangleShape2D_371uh")
