@@ -4,7 +4,11 @@ extends CharacterBody2D
 const SPEED = 130.0
 const JUMP_VELOCITY = -300.0
 
+
 var dead := false
+var timer_started := false
+var death_timer: float = 1.0
+
 
 @onready var sprite: AnimatedSprite2D = $AnimatedKnight
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
@@ -14,6 +18,13 @@ func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if !is_on_floor() && !dead:
 		velocity += get_gravity() * delta
+		
+	# Death timer logic
+	if timer_started == true:
+		death_timer -= delta # Count down using delta time
+		
+	if death_timer <= 0:
+		Globals.game_over = true # Set game over
 
 	# Handle jump.
 	if !dead && Input.is_action_just_pressed("ui_accept") && is_on_floor():
@@ -45,7 +56,7 @@ func _physics_process(delta: float) -> void:
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body.name == "Slime" && !dead:
+	if body.scene_file_path == "res://scenes/slime.tscn"  && !dead:
 		die()
 
 
@@ -54,6 +65,7 @@ func die() -> void:
 	dead = true
 	collision_shape.queue_free()
 	sprite.play("die") # Play death animation
+	timer_started = true
 
 
 func move() -> float:

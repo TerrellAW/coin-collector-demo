@@ -67,7 +67,7 @@ func choose_direction(direction) -> int:
 
 
 func _on_player_detector_body_entered(body: Node2D) -> void:
-	if body.name == "Player" && !dead:
+	if body.scene_file_path == "res://scenes/player.tscn" && !dead:
 		die()
 	
 func die() -> void:
