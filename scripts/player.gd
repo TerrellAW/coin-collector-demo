@@ -7,11 +7,12 @@ const JUMP_VELOCITY = -300.0
 var dead := false
 
 @onready var sprite: AnimatedSprite2D = $AnimatedKnight
+@onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
-	if !is_on_floor():
+	if !is_on_floor() && !dead:
 		velocity += get_gravity() * delta
 
 	# Handle jump.
@@ -51,6 +52,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 func die() -> void:
 	print("Player killed by slime!")
 	dead = true
+	collision_shape.queue_free()
 	sprite.play("die") # Play death animation
 
 
