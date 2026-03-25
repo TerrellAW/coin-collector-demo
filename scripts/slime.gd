@@ -14,7 +14,6 @@ var death_timer: float = 1.0
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSlime
 @onready var ray_cast_down: RayCast2D = $AnimatedSlime/RayCastDown
-@onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 
 func _physics_process(delta: float) -> void:
