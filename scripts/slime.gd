@@ -7,14 +7,27 @@ const SPEED = 80.0
 var direction := 1
 
 
+var dead := false
+var timer_started := false
+var death_timer: float = 1.0
+
+
 @onready var sprite: AnimatedSprite2D = $AnimatedSlime
 @onready var ray_cast_down: RayCast2D = $AnimatedSlime/RayCastDown
+@onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
+		
+	# Death timer logic
+	if timer_started == true:
+		death_timer -= delta # Count down using delta time
+		
+	if death_timer <= 0:
+		queue_free() # Delete enemy object
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
@@ -25,8 +38,8 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		
 # Animations
-	sprite.play("default")
-	# TODO: If damaged play damage animation and then vanish, else default
+	if !dead:
+		sprite.play("default")
 	
 	if direction > 0:
 		sprite.scale.x = 1
@@ -44,9 +57,7 @@ func choose_direction(direction) -> int:
 			return -1
 		else:
 			return 1 
-
-
-	if !ray_cast_down.is_colliding():
+	elif !ray_cast_down.is_colliding():
 		print("Slime is on edge!")
 		if direction > 0:
 			return -1
@@ -54,3 +65,16 @@ func choose_direction(direction) -> int:
 			return 1
 	else:
 		return direction
+
+
+func _on_player_detector_body_entered(body: Node2D) -> void:
+	if body.name == "Player" && !dead:
+		die()
+	
+func die() -> void:
+	print("Slime killed by player!")
+	direction = 0 # Stop moving
+	dead = true
+	sprite.play("die") # Play death animation
+	timer_started = true
+	
