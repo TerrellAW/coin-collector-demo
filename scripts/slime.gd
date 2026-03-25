@@ -68,13 +68,13 @@ func choose_direction(direction) -> int:
 
 
 func _on_player_detector_body_entered(body: Node2D) -> void:
-	if body.name == "Player" && !dead:
+	if body.name == "Player":
 		die()
 	
 func die() -> void:
 	print("Slime killed by player!")
 	direction = 0 # Stop moving
-	dead = true
 	sprite.play("die") # Play death animation
+	dead = true
 	timer_started = true
 	
