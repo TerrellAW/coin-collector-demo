@@ -4,6 +4,8 @@ extends CharacterBody2D
 const SPEED = 130.0
 const JUMP_VELOCITY = -300.0
 
+var dead := false
+
 @onready var sprite: AnimatedSprite2D = $AnimatedKnight
 
 
@@ -17,25 +19,43 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 
 	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction := Input.get_axis("ui_left", "ui_right")
+	var direction := move()
 	if direction:
 		velocity.x = direction * SPEED
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 
 # Animations
-	if not is_on_floor():
-		sprite.play("jump")
-	# Run right
-	elif direction > 0:
-		sprite.flip_h = false
-		sprite.play("run")
-	# Run left
-	elif direction < 0:
-		sprite.flip_h = true
-		sprite.play("run")
-	else:
-		sprite.play("idle")
+	if !dead:
+		if not is_on_floor():
+			sprite.play("jump")
+		# Run right
+		elif direction > 0:
+			sprite.flip_h = false
+			sprite.play("run")
+		# Run left
+		elif direction < 0:
+			sprite.flip_h = true
+			sprite.play("run")
+		else:
+			sprite.play("idle")
 	
 	move_and_slide()
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body.name == "Slime":
+		die()
+
+
+func die() -> void:
+	print("Player killed by slime!")
+	dead = true
+	sprite.play("die") # Play death animation
+
+
+func move() -> float:
+	if !dead:
+		return Input.get_axis("ui_left", "ui_right")
+	else:
+		return 0
