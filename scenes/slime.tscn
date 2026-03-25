@@ -19,6 +19,30 @@ region = Rect2(48, 24, 24, 24)
 atlas = ExtResource("1_371uh")
 region = Rect2(72, 24, 24, 24)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_fd6lc"]
+atlas = ExtResource("1_371uh")
+region = Rect2(24, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gstla"]
+atlas = ExtResource("1_371uh")
+region = Rect2(48, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v5wyi"]
+atlas = ExtResource("1_371uh")
+region = Rect2(72, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0l8pv"]
+atlas = ExtResource("1_371uh")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vnioy"]
+atlas = ExtResource("1_371uh")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2xjuo"]
+atlas = ExtResource("1_371uh")
+region = Rect2(0, 0, 24, 24)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_fd6lc"]
 animations = [{
 "frames": [{
@@ -37,22 +61,58 @@ animations = [{
 "loop": true,
 "name": &"default",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fd6lc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gstla")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v5wyi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0l8pv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vnioy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2xjuo")
+}],
+"loop": false,
+"name": &"die",
+"speed": 6.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_371uh"]
-size = Vector2(14, 15)
+size = Vector2(14, 9)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p2gj0"]
+size = Vector2(14, 6)
 
 [node name="Slime" type="CharacterBody2D" unique_id=1070552790]
 script = ExtResource("1_p2gj0")
 
 [node name="AnimatedSlime" type="AnimatedSprite2D" parent="." unique_id=41680725]
 sprite_frames = SubResource("SpriteFrames_fd6lc")
+animation = &"die"
 autoplay = "default"
-frame_progress = 0.33436757
+frame = 5
+frame_progress = 1.0
 
 [node name="RayCastDown" type="RayCast2D" parent="AnimatedSlime" unique_id=1382678392]
 position = Vector2(12, 0)
+target_position = Vector2(0, 24)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1583151862]
-position = Vector2(0, 4.5)
+position = Vector2(0, 7.5)
 shape = SubResource("RectangleShape2D_371uh")
+
+[node name="PlayerDetector" type="Area2D" parent="." unique_id=1961454752]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetector" unique_id=1607983753]
+shape = SubResource("RectangleShape2D_p2gj0")
+
+[connection signal="body_entered" from="PlayerDetector" to="." method="_on_player_detector_body_entered"]
