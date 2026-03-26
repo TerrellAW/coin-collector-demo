@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://1lavch6ki5h3"]
 
 [ext_resource type="PackedScene" uid="uid://bvs10x183752e" path="res://scenes/player.tscn" id="1_014kd"]
+[ext_resource type="Script" uid="uid://b5m8eane0at4n" path="res://scenes/label.gd" id="2_4nkto"]
 [ext_resource type="Texture2D" uid="uid://wyp0622y2mm6" path="res://assets/tilesets/world_tileset.png" id="2_bswci"]
 [ext_resource type="PackedScene" uid="uid://d1vo4880nxh" path="res://scenes/coin.tscn" id="3_rus8k"]
 [ext_resource type="PackedScene" uid="uid://bpoboo4u3b56j" path="res://scenes/slime.tscn" id="4_5xbjy"]
@@ -181,6 +182,14 @@ position = Vector2(-184, 16)
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=1012701711]
 position = Vector2(-1, -1)
 zoom = Vector2(4, 4)
+
+[node name="Label" type="Label" parent="Player/Camera2D" unique_id=1348803068]
+offset_left = 41.0
+offset_top = -71.0
+offset_right = 102.0
+offset_bottom = -48.0
+text = "Coins: 0"
+script = ExtResource("2_4nkto")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1069358898]
 
